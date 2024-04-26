@@ -19,7 +19,7 @@ float valorIndividual_odonto, valorTotal_odonto;
 float valorTotalGeral;
 int tipoPlano;
 int main(){
-	setlocale(LC_ALL, "Portuguese_Brasil");
+	setlocale(LC_ALL, "Portuguese");
 	do{
 	printf("Informe seu tipo de plano 1-Saude ou 0-Odonto\n ");
 	scanf("%d", &tipoPlano);
