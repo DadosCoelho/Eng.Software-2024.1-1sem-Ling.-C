@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <locale.h>
 
+/* Implemente uma algoritmo que represente a situação a seguir: Lê três números
+inteiros positivos apresentando como siada o maior valor digitado entre eles. O
+algoritmo deverá prever os valores iguais, caso isso aconteça apresentar a
+mensagem: “Todos os valores digitados são iguais”*/
+
 int num1, num2, num3, maior;
 
 int main(){

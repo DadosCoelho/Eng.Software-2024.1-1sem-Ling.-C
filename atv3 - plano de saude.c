@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
+#include <locale.h> /*para a função setlocate*/
 //Declaração de entrada das variaveis
 int operador;
 
