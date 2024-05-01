@@ -20,4 +20,5 @@ int main(){
 	}else{
 		printf("Você não pode tirar carteira de motorista");
 		}
+	system("pause");
 }

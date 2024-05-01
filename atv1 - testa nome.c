@@ -16,4 +16,5 @@ int main(){
 /*Impressão dos dados*/
 	printf("Nome completo: %s" , Nome);
 	printf(" %s" , SobreNome);
+	system("pause");
 }

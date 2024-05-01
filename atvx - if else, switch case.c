@@ -45,5 +45,6 @@ int main(){
             printf("Todos os valores digitados são iguais\n");
             break;
     }
+    system("pause");
 
 }

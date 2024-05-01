@@ -24,4 +24,5 @@ int main(){
 			printf("Salário fora da faixa permitida para financiamento");
 		}
 	}
+	system("pause");
 }

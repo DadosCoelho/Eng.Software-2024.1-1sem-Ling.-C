@@ -25,4 +25,5 @@ int main(){
     }else{
         printf("Você não possui idade permitida e/ou não passou no teste de legislação\n");
     }
+    system("pause");
 }

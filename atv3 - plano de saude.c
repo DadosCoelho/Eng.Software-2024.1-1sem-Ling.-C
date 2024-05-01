@@ -69,6 +69,7 @@ int main(){
 	printf("\nDeseja calcular outro plano? 1-sim ou 0-sair\n");
 	scanf("%d", &operador);
 	}while(operador!=0);
+	system("pause");
 	
 	
 	
