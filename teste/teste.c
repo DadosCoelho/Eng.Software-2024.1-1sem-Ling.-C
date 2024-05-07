@@ -9,7 +9,7 @@ typedef struct {
     char NomeAfiliado[50];
 } Afiliado;
 
-// 01.01 - Fun√ß√£o para criar um Afiliado
+// 01.01 - FunÁ„o para criar um Afiliado
 Afiliado CriarAfiliado(int IdAfiliado, char* NomeAfiliado) {
     Afiliado VarAfiliado;
     VarAfiliado.IdAfiliado = IdAfiliado;
@@ -17,22 +17,23 @@ Afiliado CriarAfiliado(int IdAfiliado, char* NomeAfiliado) {
     return VarAfiliado;
 }
 
-// 01.01 - Fun√ß√£o para imprimir um Afiliado
+// 01.01 - FunÁ„o para imprimir um Afiliado
 void ImprimirAfiliado(Afiliado VarAfiliado) {
-    printf("%d %s\n", VarAfiliado.IdAfiliado, VarAfiliado.NomeAfiliado);
+    printf("|  %04d  |  %-50s  |\n", VarAfiliado.IdAfiliado, VarAfiliado.NomeAfiliado);
+    printf("+--------+------------------------------------------------------+\n");
 }
 
-// 01.01 - Fun√ß√£o para escrever um Afiliado em um arquivo
+// 01.01 - FunÁ„o para escrever um Afiliado em um arquivo
 void EscreverAfiliado(FILE* fp, Afiliado VarAfiliado) {
-    fprintf(fp, "%d %s\n", VarAfiliado.IdAfiliado, VarAfiliado.NomeAfiliado);
+    fprintf(fp, "%d;%s\n", VarAfiliado.IdAfiliado, VarAfiliado.NomeAfiliado);
 }
 
-// 01.01 - Fun√ß√£o para ler um Afiliado de um arquivo
+// 01.01 - FunÁ„o para ler um Afiliado de um arquivo
 int LerAfiliado(FILE* fp, Afiliado* VarAfiliado) {
-    return fscanf(fp, "%d %49[^\n]\n", &VarAfiliado->IdAfiliado, VarAfiliado->NomeAfiliado);
+    return fscanf(fp, "%d;%49[^\n]\n", &VarAfiliado->IdAfiliado, VarAfiliado->NomeAfiliado);
 }
 
-// 01.01 - Fun√ß√£o para obter o maior ID de Afiliado
+// 01.01 - FunÁ„o para obter o maior ID de Afiliado
 int ObterMaiorIdAfiliado() {
     FILE *fp = fopen("Afiliados.txt", "r");
     if (fp == NULL) {
@@ -57,7 +58,7 @@ int ObterMaiorIdAfiliado() {
 void CadastrarNovoAfiliado(){
     char NomeAfiliadoCadastrar[50];
     printf("Digite o nome do Afiliado: ");
-    fgets(NomeAfiliadoCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
+    fgets(NomeAfiliadoCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaÁo
     NomeAfiliadoCadastrar[strcspn(NomeAfiliadoCadastrar, "\n")] = 0; // Remove a nova linha do final
 
     int IdAfiliadoCadastrar = ObterMaiorIdAfiliado() + 1;
@@ -100,7 +101,7 @@ void EditarCadastroAfiliado(){
     while (LerAfiliado(fpOld, &VarAfiliado) == 2) {
         if (VarAfiliado.IdAfiliado == IdAfiliadoEditar) {
             printf("Digite o novo nome do Afiliado: ");
-            fgets(VarAfiliado.NomeAfiliado, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
+            fgets(VarAfiliado.NomeAfiliado, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaÁo
             VarAfiliado.NomeAfiliado[strcspn(VarAfiliado.NomeAfiliado, "\n")] = 0; // Remove a nova linha do final
         }
         EscreverAfiliado(fpNew, VarAfiliado);
@@ -118,7 +119,7 @@ void EditarCadastroAfiliado(){
 // 01.01.04 - Excluir um cadastro de Afiliado
 void ExcluirCadastroAfiliado(){
 	int IdAfiliadoExcluir;
-    printf("Digite o ID do Afiliado a ser exclu√≠do: ");
+    printf("Digite o ID do Afiliado a ser excluÌdo: ");
     scanf("%d", &IdAfiliadoExcluir);
     getchar(); // Consume o caractere de nova linha
 
@@ -138,19 +139,23 @@ void ExcluirCadastroAfiliado(){
     remove("Afiliados.txt");
     rename("Afiliados_tmp.txt", "Afiliados.txt");
 
-    printf("Cadastro exclu√≠do com sucesso!\n");
+    printf("Cadastro excluÌdo com sucesso!\n");
 }
 
-// 01.01 - Fun√ß√£o para chamar Menu Cadastro Afiliado
+// 01.01 - FunÁ„o para chamar Menu Cadastro Afiliado
 void MenuCadastroAfiliado(){
     int OpMenuCadastroAfiliado;
     do {
-        printf("1. Cadastrar novo Afiliado\n");
-        printf("2. Mostrar todos os Afiliados\n");
-        printf("3. Editar um cadastro de Afiliado\n");
-        printf("4. Excluir um cadastro de Afiliado\n");
-        printf("5. Sair\n");
-        printf("Escolha uma op√ß√£o: ");
+    	printf("+---------------------------------------------------------------+\n");
+    	printf("|                  MENU DE CADASTRO DO AFILIADO                 |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 1-CADASTRAR NOVO AFILIADO     | 2-MOSTRAR TODOS OS AFILIADOS  |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 3-EDITAR UM AFILIADO          | 4-EXCLUIR UM AFILIADO         |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("|                5-VOLTAR PARA MENU DE CADASTRO                 |\n");
+		printf("+-------------------------------+-------------------------------+\n");
+        printf("Escolha uma opÁ„o: ");
         scanf("%d", &OpMenuCadastroAfiliado);
         getchar(); // Consume o caractere de nova linha
         
@@ -164,6 +169,9 @@ void MenuCadastroAfiliado(){
             }
             case 2: {
             	system("cls");
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |                  NOME DO AFILIADO                    |\n");
+				printf("+--------+------------------------------------------------------+\n");
                 MostrarTodosAfiliados();
                 system("pause");
                 system("cls");
@@ -171,7 +179,10 @@ void MenuCadastroAfiliado(){
             }
             case 3: {
             	system("cls");
-            	MostrarTodosAfiliados();
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |                  NOME DO AFILIADO                    |\n");
+				printf("+--------+------------------------------------------------------+\n");
+				MostrarTodosAfiliados();
                 EditarCadastroAfiliado();
                 system("pause");
                 system("cls");
@@ -179,7 +190,10 @@ void MenuCadastroAfiliado(){
             }
             case 4: {
             	system("cls");
-            	MostrarTodosAfiliados();
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |                  NOME DO AFILIADO                    |\n");
+				printf("+--------+------------------------------------------------------+\n");
+				MostrarTodosAfiliados();
                 ExcluirCadastroAfiliado();
                 system("pause");
                 system("cls");
@@ -203,7 +217,7 @@ typedef struct {
     char NomeLivro[50];
 } Livro;
 
-// 01.02 - Fun√ß√£o para criar um Livro
+// 01.02 - FunÁ„o para criar um Livro
 Livro CriarLivro(int IdLivro, char* NomeLivro) {
     Livro VarLivro;
     VarLivro.IdLivro = IdLivro;
@@ -211,22 +225,23 @@ Livro CriarLivro(int IdLivro, char* NomeLivro) {
     return VarLivro;
 }
 
-// 01.02 - Fun√ß√£o para imprimir um Livro
+// 01.02 - FunÁ„o para imprimir um Livro
 void ImprimirLivro(Livro VarLivro) {
-    printf("%d %s\n", VarLivro.IdLivro, VarLivro.NomeLivro);
+    printf("|  %04d  |  %-50s  |\n", VarLivro.IdLivro, VarLivro.NomeLivro);
+    printf("+--------+------------------------------------------------------+\n");
 }
 
-// 01.02 - Fun√ß√£o para escrever um Livro em um arquivo
+// 01.02 - FunÁ„o para escrever um Livro em um arquivo
 void EscreverLivro(FILE* fp, Livro VarLivro) {
-    fprintf(fp, "%d %s\n", VarLivro.IdLivro, VarLivro.NomeLivro);
+    fprintf(fp, "%d;%s\n", VarLivro.IdLivro, VarLivro.NomeLivro);
 }
 
-// 01.02 - Fun√ß√£o para ler um Livro de um arquivo
+// 01.02 - FunÁ„o para ler um Livro de um arquivo
 int LerLivro(FILE* fp, Livro* VarLivro) {
-    return fscanf(fp, "%d %49[^\n]\n", &VarLivro->IdLivro, VarLivro->NomeLivro);
+    return fscanf(fp, "%d;%49[^\n]\n", &VarLivro->IdLivro, VarLivro->NomeLivro);
 }
 
-// 01.02 - Fun√ß√£o para obter o maior ID de Livro
+// 01.02 - FunÁ„o para obter o maior ID de Livro
 int ObterMaiorIdLivro() {
     FILE *fp = fopen("Livros.txt", "r");
     if (fp == NULL) {
@@ -251,7 +266,7 @@ int ObterMaiorIdLivro() {
 void CadastrarNovoLivro(){
     char NomeLivroCadastrar[50];
     printf("Digite o nome do Livro: ");
-    fgets(NomeLivroCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
+    fgets(NomeLivroCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaÁo
     NomeLivroCadastrar[strcspn(NomeLivroCadastrar, "\n")] = 0; // Remove a nova linha do final
 
     int IdLivroCadastrar = ObterMaiorIdLivro() + 1;
@@ -294,7 +309,7 @@ void EditarCadastroLivro(){
     while (LerLivro(fpOld, &VarLivro) == 2) {
         if (VarLivro.IdLivro == IdLivroEditar) {
             printf("Digite o novo nome do Livro: ");
-            fgets(VarLivro.NomeLivro, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
+            fgets(VarLivro.NomeLivro, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaÁo
             VarLivro.NomeLivro[strcspn(VarLivro.NomeLivro, "\n")] = 0; // Remove a nova linha do final
         }
         EscreverLivro(fpNew, VarLivro);
@@ -312,7 +327,7 @@ void EditarCadastroLivro(){
 // 01.02.04 - Excluir um cadastro de Livro
 void ExcluirCadastroLivro(){
 	int IdLivroExcluir;
-    printf("Digite o ID do Livro a ser exclu√≠do: ");
+    printf("Digite o ID do Livro a ser excluÌdo: ");
     scanf("%d", &IdLivroExcluir);
     getchar(); // Consume o caractere de nova linha
 
@@ -332,19 +347,23 @@ void ExcluirCadastroLivro(){
     remove("Livros.txt");
     rename("Livros_tmp.txt", "Livros.txt");
 
-    printf("Cadastro exclu√≠do com sucesso!\n");
+    printf("Cadastro excluÌdo com sucesso!\n");
 }
 
-// 01.02 - Fun√ß√£o para chamar Menu Cadastro Livro
+// 01.02 - FunÁ„o para chamar Menu Cadastro Livro
 void MenuCadastroLivro(){
     int OpMenuCadastroLivro;
     do {
-        printf("1. Cadastrar novo Livro\n");
-        printf("2. Mostrar todos os Livros\n");
-        printf("3. Editar um cadastro de Livro\n");
-        printf("4. Excluir um cadastro de Livro\n");
-        printf("5. Sair\n");
-        printf("Escolha uma op√ß√£o: ");
+    	printf("+---------------------------------------------------------------+\n");
+    	printf("|                  MENU DE CADASTRO DO LIVRO                    |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 1-CADASTRAR NOVO LIVRO        | 2-MOSTRAR TODOS OS LIVROS     |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 3-EDITAR UM LIVRO             | 4-EXCLUIR UM LIVRO            |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("|                5-VOLTAR PARA MENU DE CADASTRO                 |\n");
+		printf("+-------------------------------+-------------------------------+\n");
+        printf("Escolha uma opÁ„o: ");
         scanf("%d", &OpMenuCadastroLivro);
         getchar(); // Consume o caractere de nova linha
         
@@ -358,6 +377,9 @@ void MenuCadastroLivro(){
             }
             case 2: {
             	system("cls");
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |                   NOME DO LIVRO                      |\n");
+				printf("+--------+------------------------------------------------------+\n");
                 MostrarTodosLivros();
                 system("pause");
                 system("cls");
@@ -365,6 +387,9 @@ void MenuCadastroLivro(){
             }
             case 3: {
             	system("cls");
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |                   NOME DO LIVRO                      |\n");
+				printf("+--------+------------------------------------------------------+\n");
             	MostrarTodosLivros();
                 EditarCadastroLivro();
                 system("pause");
@@ -373,6 +398,9 @@ void MenuCadastroLivro(){
             }
             case 4: {
             	system("cls");
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |                   NOME DO LIVRO                      |\n");
+				printf("+--------+------------------------------------------------------+\n");
             	MostrarTodosLivros();
                 ExcluirCadastroLivro();
                 system("pause");
@@ -397,7 +425,7 @@ typedef struct {
     char NomeStatusLivro[50];
 } StatusLivro;
 
-// 01.03 - Fun√ß√£o para criar um StatusLivro
+// 01.03 - FunÁ„o para criar um StatusLivro
 StatusLivro CriarStatusLivro(int IdStatusLivro, char* NomeStatusLivro) {
     StatusLivro VarStatusLivro;
     VarStatusLivro.IdStatusLivro = IdStatusLivro;
@@ -405,22 +433,23 @@ StatusLivro CriarStatusLivro(int IdStatusLivro, char* NomeStatusLivro) {
     return VarStatusLivro;
 }
 
-// 01.03 - Fun√ß√£o para imprimir um StatusLivro
+// 01.03 - FunÁ„o para imprimir um StatusLivro
 void ImprimirStatusLivro(StatusLivro VarStatusLivro) {
-    printf("%d %s\n", VarStatusLivro.IdStatusLivro, VarStatusLivro.NomeStatusLivro);
+    printf("|  %04d  |  %-50s  |\n", VarStatusLivro.IdStatusLivro, VarStatusLivro.NomeStatusLivro);
+    printf("+--------+------------------------------------------------------+\n");
 }
 
-// 01.03 - Fun√ß√£o para escrever um StatusLivro em um arquivo
+// 01.03 - FunÁ„o para escrever um StatusLivro em um arquivo
 void EscreverStatusLivro(FILE* fp, StatusLivro VarStatusLivro) {
-    fprintf(fp, "%d %s\n", VarStatusLivro.IdStatusLivro, VarStatusLivro.NomeStatusLivro);
+    fprintf(fp, "%d;%s\n", VarStatusLivro.IdStatusLivro, VarStatusLivro.NomeStatusLivro);
 }
 
-// 01.03 - Fun√ß√£o para ler um StatusLivro de um arquivo
+// 01.03 - FunÁ„o para ler um StatusLivro de um arquivo
 int LerStatusLivro(FILE* fp, StatusLivro* VarStatusLivro) {
-    return fscanf(fp, "%d %49[^\n]\n", &VarStatusLivro->IdStatusLivro, VarStatusLivro->NomeStatusLivro);
+    return fscanf(fp, "%d;%49[^\n]\n", &VarStatusLivro->IdStatusLivro, VarStatusLivro->NomeStatusLivro);
 }
 
-// 01.03 - Fun√ß√£o para obter o maior ID de StatusLivro
+// 01.03 - FunÁ„o para obter o maior ID de StatusLivro
 int ObterMaiorIdStatusLivro() {
     FILE *fp = fopen("StatusLivros.txt", "r");
     if (fp == NULL) {
@@ -445,7 +474,7 @@ int ObterMaiorIdStatusLivro() {
 void CadastrarNovoStatusLivro(){
     char NomeStatusLivroCadastrar[50];
     printf("Digite o nome do StatusLivro: ");
-    fgets(NomeStatusLivroCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
+    fgets(NomeStatusLivroCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaÁo
     NomeStatusLivroCadastrar[strcspn(NomeStatusLivroCadastrar, "\n")] = 0; // Remove a nova linha do final
 
     int IdStatusLivroCadastrar = ObterMaiorIdStatusLivro() + 1;
@@ -488,7 +517,7 @@ void EditarCadastroStatusLivro(){
     while (LerStatusLivro(fpOld, &VarStatusLivro) == 2) {
         if (VarStatusLivro.IdStatusLivro == IdStatusLivroEditar) {
             printf("Digite o novo nome do StatusLivro: ");
-            fgets(VarStatusLivro.NomeStatusLivro, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
+            fgets(VarStatusLivro.NomeStatusLivro, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaÁo
             VarStatusLivro.NomeStatusLivro[strcspn(VarStatusLivro.NomeStatusLivro, "\n")] = 0; // Remove a nova linha do final
         }
         EscreverStatusLivro(fpNew, VarStatusLivro);
@@ -506,7 +535,7 @@ void EditarCadastroStatusLivro(){
 // 01.03.04 - Excluir um cadastro de StatusLivro
 void ExcluirCadastroStatusLivro(){
 	int IdStatusLivroExcluir;
-    printf("Digite o ID do StatusLivro a ser exclu√≠do: ");
+    printf("Digite o ID do StatusLivro a ser excluÌdo: ");
     scanf("%d", &IdStatusLivroExcluir);
     getchar(); // Consume o caractere de nova linha
 
@@ -526,20 +555,24 @@ void ExcluirCadastroStatusLivro(){
     remove("StatusLivros.txt");
     rename("StatusLivros_tmp.txt", "StatusLivros.txt");
 
-    printf("Cadastro exclu√≠do com sucesso!\n");
+    printf("Cadastro excluÌdo com sucesso!\n");
 }
 
-// 01.03 - Fun√ß√£o para chamar Menu Cadastro StatusLivro
+// 01.03 - FunÁ„o para chamar Menu Cadastro StatusLivro
 void MenuCadastroStatusLivro(){
 	system("cls");
     int OpMenuCadastroStatusLivro;
     do {
-        printf("1. Cadastrar novo StatusLivro\n");
-        printf("2. Mostrar todos os StatusLivros\n");
-        printf("3. Editar um cadastro de StatusLivro\n");
-        printf("4. Excluir um cadastro de StatusLivro\n");
-        printf("5. Sair\n");
-        printf("Escolha uma op√ß√£o: ");
+    	printf("+---------------------------------------------------------------+\n");
+    	printf("|                MENU DE CADASTRO DO STATUS DO LIVRO            |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 1-CADASTRAR NOVO STATUS       | 2-MOSTRAR TODOS OS STATUS     |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 3-EDITAR UM STATUS            | 4-EXCLUIR UM STATUS           |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("|                5-VOLTAR PARA MENU DE CADASTRO                 |\n");
+		printf("+-------------------------------+-------------------------------+\n");
+        printf("Escolha uma opÁ„o: ");
         scanf("%d", &OpMenuCadastroStatusLivro);
         getchar(); // Consume o caractere de nova linha
         
@@ -553,6 +586,9 @@ void MenuCadastroStatusLivro(){
             }
             case 2: {
             	system("cls");
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |              NOME DO STATUS DO LIVRO                 |\n");
+				printf("+--------+------------------------------------------------------+\n");
                 MostrarTodosStatusLivros();
                 system("pause");
                 system("cls");
@@ -560,6 +596,9 @@ void MenuCadastroStatusLivro(){
             }
             case 3: {
             	system("cls");
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |              NOME DO STATUS DO LIVRO                 |\n");
+				printf("+--------+------------------------------------------------------+\n");
             	MostrarTodosStatusLivros();
                 EditarCadastroStatusLivro();
                 system("pause");
@@ -568,6 +607,9 @@ void MenuCadastroStatusLivro(){
             }
             case 4: {
             	system("cls");
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |              NOME DO STATUS DO LIVRO                 |\n");
+				printf("+--------+------------------------------------------------------+\n");
             	MostrarTodosStatusLivros();
                 ExcluirCadastroStatusLivro();
                 system("pause");
@@ -594,7 +636,7 @@ typedef struct {
     char NomeCategoriaLivro[50];
 } CategoriaLivro;
 
-// 01.04 - Fun√ß√£o para criar um CategoriaLivro
+// 01.04 - FunÁ„o para criar um CategoriaLivro
 CategoriaLivro CriarCategoriaLivro(int IdCategoriaLivro, char* NomeCategoriaLivro) {
     CategoriaLivro VarCategoriaLivro;
     VarCategoriaLivro.IdCategoriaLivro = IdCategoriaLivro;
@@ -602,22 +644,23 @@ CategoriaLivro CriarCategoriaLivro(int IdCategoriaLivro, char* NomeCategoriaLivr
     return VarCategoriaLivro;
 }
 
-// 01.04 - Fun√ß√£o para imprimir um CategoriaLivro
+// 01.04 - FunÁ„o para imprimir um CategoriaLivro
 void ImprimirCategoriaLivro(CategoriaLivro VarCategoriaLivro) {
-    printf("%d %s\n", VarCategoriaLivro.IdCategoriaLivro, VarCategoriaLivro.NomeCategoriaLivro);
+    printf("|  %04d  |  %-50s  |\n", VarCategoriaLivro.IdCategoriaLivro, VarCategoriaLivro.NomeCategoriaLivro);
+    printf("+--------+------------------------------------------------------+\n");
 }
 
-// 01.04 - Fun√ß√£o para escrever um CategoriaLivro em um arquivo
+// 01.04 - FunÁ„o para escrever um CategoriaLivro em um arquivo
 void EscreverCategoriaLivro(FILE* fp, CategoriaLivro VarCategoriaLivro) {
-    fprintf(fp, "%d %s\n", VarCategoriaLivro.IdCategoriaLivro, VarCategoriaLivro.NomeCategoriaLivro);
+    fprintf(fp, "%d;%s\n", VarCategoriaLivro.IdCategoriaLivro, VarCategoriaLivro.NomeCategoriaLivro);
 }
 
-// 01.04 - Fun√ß√£o para ler um CategoriaLivro de um arquivo
+// 01.04 - FunÁ„o para ler um CategoriaLivro de um arquivo
 int LerCategoriaLivro(FILE* fp, CategoriaLivro* VarCategoriaLivro) {
-    return fscanf(fp, "%d %49[^\n]\n", &VarCategoriaLivro->IdCategoriaLivro, VarCategoriaLivro->NomeCategoriaLivro);
+    return fscanf(fp, "%d;%49[^\n]\n", &VarCategoriaLivro->IdCategoriaLivro, VarCategoriaLivro->NomeCategoriaLivro);
 }
 
-// 01.04 - Fun√ß√£o para obter o maior ID de CategoriaLivro
+// 01.04 - FunÁ„o para obter o maior ID de CategoriaLivro
 int ObterMaiorIdCategoriaLivro() {
     FILE *fp = fopen("CategoriaLivros.txt", "r");
     if (fp == NULL) {
@@ -642,7 +685,7 @@ int ObterMaiorIdCategoriaLivro() {
 void CadastrarNovoCategoriaLivro(){
     char NomeCategoriaLivroCadastrar[50];
     printf("Digite o nome do CategoriaLivro: ");
-    fgets(NomeCategoriaLivroCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
+    fgets(NomeCategoriaLivroCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaÁo
     NomeCategoriaLivroCadastrar[strcspn(NomeCategoriaLivroCadastrar, "\n")] = 0; // Remove a nova linha do final
 
     int IdCategoriaLivroCadastrar = ObterMaiorIdCategoriaLivro() + 1;
@@ -685,7 +728,7 @@ void EditarCadastroCategoriaLivro(){
     while (LerCategoriaLivro(fpOld, &VarCategoriaLivro) == 2) {
         if (VarCategoriaLivro.IdCategoriaLivro == IdCategoriaLivroEditar) {
             printf("Digite o novo nome do CategoriaLivro: ");
-            fgets(VarCategoriaLivro.NomeCategoriaLivro, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
+            fgets(VarCategoriaLivro.NomeCategoriaLivro, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaÁo
             VarCategoriaLivro.NomeCategoriaLivro[strcspn(VarCategoriaLivro.NomeCategoriaLivro, "\n")] = 0; // Remove a nova linha do final
         }
         EscreverCategoriaLivro(fpNew, VarCategoriaLivro);
@@ -703,7 +746,7 @@ void EditarCadastroCategoriaLivro(){
 // 01.04.04 - Excluir um cadastro de CategoriaLivro
 void ExcluirCadastroCategoriaLivro(){
 	int IdCategoriaLivroExcluir;
-    printf("Digite o ID do CategoriaLivro a ser exclu√≠do: ");
+    printf("Digite o ID do CategoriaLivro a ser excluÌdo: ");
     scanf("%d", &IdCategoriaLivroExcluir);
     getchar(); // Consume o caractere de nova linha
 
@@ -723,19 +766,23 @@ void ExcluirCadastroCategoriaLivro(){
     remove("CategoriaLivros.txt");
     rename("CategoriaLivros_tmp.txt", "CategoriaLivros.txt");
 
-    printf("Cadastro exclu√≠do com sucesso!\n");
+    printf("Cadastro excluÌdo com sucesso!\n");
 }
 
-// 01.04 - Fun√ß√£o para chamar Menu Cadastro CategoriaLivro
+// 01.04 - FunÁ„o para chamar Menu Cadastro CategoriaLivro
 void MenuCadastroCategoriaLivro(){
     int OpMenuCadastroCategoriaLivro;
     do {
-        printf("1. Cadastrar novo CategoriaLivro\n");
-        printf("2. Mostrar todos os CategoriaLivros\n");
-        printf("3. Editar um cadastro de CategoriaLivro\n");
-        printf("4. Excluir um cadastro de CategoriaLivro\n");
-        printf("5. Sair\n");
-        printf("Escolha uma op√ß√£o: ");
+    	printf("+---------------------------------------------------------------+\n");
+    	printf("|             MENU DE CADASTRO DA CATEGORIA DO LIVRO            |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 1-CADASTRAR NOVA CATEGORIA    | 2-MOSTRAR TODAS AS CATEGORIAS |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 3-EDITAR UMA CATEGORIA        | 4-EXCLUIR UMA CATEGORIA       |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("|                5-VOLTAR PARA MENU DE CADASTRO                 |\n");
+		printf("+-------------------------------+-------------------------------+\n");
+        printf("Escolha uma opÁ„o: ");
         scanf("%d", &OpMenuCadastroCategoriaLivro);
         getchar(); // Consume o caractere de nova linha
         
@@ -749,6 +796,9 @@ void MenuCadastroCategoriaLivro(){
             }
             case 2: {
             	system("cls");
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |             NOME DA CATEGORIA DO LIVRO               |\n");
+				printf("+--------+------------------------------------------------------+\n");
                 MostrarTodosCategoriaLivros();
                 system("pause");
                 system("cls");
@@ -756,6 +806,9 @@ void MenuCadastroCategoriaLivro(){
             }
             case 3: {
             	system("cls");
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |             NOME DA CATEGORIA DO LIVRO               |\n");
+				printf("+--------+------------------------------------------------------+\n");
             	MostrarTodosCategoriaLivros();
                 EditarCadastroCategoriaLivro();
                 system("pause");
@@ -764,6 +817,9 @@ void MenuCadastroCategoriaLivro(){
             }
             case 4: {
             	system("cls");
+            	printf("+--------+------------------------------------------------------+\n");
+				printf("|   ID   |             NOME DA CATEGORIA DO LIVRO               |\n");
+				printf("+--------+------------------------------------------------------+\n");
             	MostrarTodosCategoriaLivros();
                 ExcluirCadastroCategoriaLivro();
                 system("pause");
@@ -785,33 +841,40 @@ void MenuCadastroCategoriaLivro(){
 // 02 - Estrutura para representar um EmprestimoDevolucao
 typedef struct {
     int IdEmprestimoDevolucao;
-    char NomeEmprestimoDevolucao[50];
+    char NomeEmprestimoDevolucao[11];
+    char DataEmprestimoDevolucao[11];
+    int IdEmprestimoDevolucaoAfiliado;
+    int IdEmprestimoDevolucaoLivro;
 } EmprestimoDevolucao;
 
-// 02 - Fun√ß√£o para criar um EmprestimoDevolucao
-EmprestimoDevolucao CriarEmprestimoDevolucao(int IdEmprestimoDevolucao, char* NomeEmprestimoDevolucao) {
+// 02 - FunÁ„o para criar um EmprestimoDevolucao
+EmprestimoDevolucao CriarEmprestimoDevolucao(int IdEmprestimoDevolucao, char* NomeEmprestimoDevolucao, char* DataEmprestimoDevolucao, int IdEmprestimoDevolucaoAfiliado, int IdEmprestimoDevolucaoLivro) {
     EmprestimoDevolucao VarEmprestimoDevolucao;
     VarEmprestimoDevolucao.IdEmprestimoDevolucao = IdEmprestimoDevolucao;
     strcpy(VarEmprestimoDevolucao.NomeEmprestimoDevolucao, NomeEmprestimoDevolucao);
+    strcpy(VarEmprestimoDevolucao.DataEmprestimoDevolucao, DataEmprestimoDevolucao);
+    VarEmprestimoDevolucao.IdEmprestimoDevolucaoAfiliado = IdEmprestimoDevolucaoAfiliado;
+    VarEmprestimoDevolucao.IdEmprestimoDevolucaoLivro = IdEmprestimoDevolucaoLivro;
     return VarEmprestimoDevolucao;
 }
 
-// 02 - Fun√ß√£o para imprimir um EmprestimoDevolucao
+// 02 - FunÁ„o para imprimir um EmprestimoDevolucao
 void ImprimirEmprestimoDevolucao(EmprestimoDevolucao VarEmprestimoDevolucao) {
-    printf("%d %s\n", VarEmprestimoDevolucao.IdEmprestimoDevolucao, VarEmprestimoDevolucao.NomeEmprestimoDevolucao);
+    printf("|  %04d  |    %-11s   |   %-11s   |  %04d  |  %04d  |\n", VarEmprestimoDevolucao.IdEmprestimoDevolucao, VarEmprestimoDevolucao.NomeEmprestimoDevolucao, VarEmprestimoDevolucao.DataEmprestimoDevolucao, VarEmprestimoDevolucao.IdEmprestimoDevolucaoAfiliado, VarEmprestimoDevolucao.IdEmprestimoDevolucaoLivro);
+    printf("+--------+------------------+-----------------+--------+--------+\n");
 }
 
-// 02 - Fun√ß√£o para escrever um EmprestimoDevolucao em um arquivo
+// 02 - FunÁ„o para escrever um EmprestimoDevolucao em um arquivo
 void EscreverEmprestimoDevolucao(FILE* fp, EmprestimoDevolucao VarEmprestimoDevolucao) {
-    fprintf(fp, "%d %s\n", VarEmprestimoDevolucao.IdEmprestimoDevolucao, VarEmprestimoDevolucao.NomeEmprestimoDevolucao);
+    fprintf(fp, "%d;%s;%s;%d;%d\n", VarEmprestimoDevolucao.IdEmprestimoDevolucao, VarEmprestimoDevolucao.NomeEmprestimoDevolucao, VarEmprestimoDevolucao.DataEmprestimoDevolucao, VarEmprestimoDevolucao.IdEmprestimoDevolucaoAfiliado, VarEmprestimoDevolucao.IdEmprestimoDevolucaoLivro);
 }
 
-// 02 - Fun√ß√£o para ler um EmprestimoDevolucao de um arquivo
+// 02 - FunÁ„o para ler um EmprestimoDevolucao de um arquivo
 int LerEmprestimoDevolucao(FILE* fp, EmprestimoDevolucao* VarEmprestimoDevolucao) {
-    return fscanf(fp, "%d %49[^\n]\n", &VarEmprestimoDevolucao->IdEmprestimoDevolucao, VarEmprestimoDevolucao->NomeEmprestimoDevolucao);
+    return fscanf(fp, "%d;%10[^;];%10[^;];%d;%d\n", &VarEmprestimoDevolucao->IdEmprestimoDevolucao, VarEmprestimoDevolucao->NomeEmprestimoDevolucao, VarEmprestimoDevolucao->DataEmprestimoDevolucao, &VarEmprestimoDevolucao->IdEmprestimoDevolucaoAfiliado, &VarEmprestimoDevolucao->IdEmprestimoDevolucaoLivro);
 }
 
-// 02 - Fun√ß√£o para obter o maior ID de EmprestimoDevolucao
+// 02 - FunÁ„o para obter o maior ID de EmprestimoDevolucao
 int ObterMaiorIdEmprestimoDevolucao() {
     FILE *fp = fopen("EmprestimoDevolucaos.txt", "r");
     if (fp == NULL) {
@@ -820,7 +883,7 @@ int ObterMaiorIdEmprestimoDevolucao() {
 
     int MaiorIdEmprestimoDevolucao = 0;
     EmprestimoDevolucao VarEmprestimoDevolucao;
-    while (LerEmprestimoDevolucao(fp, &VarEmprestimoDevolucao) == 2) {
+    while (LerEmprestimoDevolucao(fp, &VarEmprestimoDevolucao) == 5) {
         if (VarEmprestimoDevolucao.IdEmprestimoDevolucao > MaiorIdEmprestimoDevolucao) {
             MaiorIdEmprestimoDevolucao = VarEmprestimoDevolucao.IdEmprestimoDevolucao;
         }
@@ -834,14 +897,75 @@ int ObterMaiorIdEmprestimoDevolucao() {
 
 // 02.01 - Cadastrar novo EmprestimoDevolucao
 void CadastrarNovoEmprestimoDevolucao(){
-    char NomeEmprestimoDevolucaoCadastrar[50];
-    printf("Digite o nome do EmprestimoDevolucao: ");
-    fgets(NomeEmprestimoDevolucaoCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
-    NomeEmprestimoDevolucaoCadastrar[strcspn(NomeEmprestimoDevolucaoCadastrar, "\n")] = 0; // Remove a nova linha do final
+    
+    
+    
+    int temp;
+    char NomeEmprestimoDevolucaoCadastrar[11], DataEmprestimoDevolucaoCadastrar[11];
+    int IdEmprestimoDevolucaoAfiliadoCadastrar, IdEmprestimoDevolucaoLivroCadastrar;
+	
+	int IdEmprestimoDevolucaoCadastrar = ObterMaiorIdEmprestimoDevolucao() + 1;
+	
+	printf("\n");
+	printf("Digite '1' para Emprestimo ou '2' para Devolucao: ");
+    scanf("%d", &temp);
+    if(temp == 1){
+        strcpy(NomeEmprestimoDevolucaoCadastrar, "EMPRESTIMO");
+    } else if(temp == 2){
+        strcpy(NomeEmprestimoDevolucaoCadastrar, "DEVOLUCAO ");
+    } else {
+        strcpy(NomeEmprestimoDevolucaoCadastrar, "vazio     ");
+    }
+    system("cls");
+	printf("+--------+------------------+-----------------+--------+--------+\n");
+	printf("|   ID   |    EMP OU DEV    |       DATA      | ID AFI | ID LIV |\n");
+	printf("+--------+------------------+-----------------+--------+--------+\n");
+    printf("|  %04d  |    %-11s   |                 |        |        |\n", IdEmprestimoDevolucaoCadastrar, NomeEmprestimoDevolucaoCadastrar);
+    printf("+--------+------------------+-----------------+--------+--------+\n");
+    printf("\n");
+    
+	printf("Digite o Data: ");
+    scanf("%s", DataEmprestimoDevolucaoCadastrar);
+    system("cls");
+	printf("+--------+------------------+-----------------+--------+--------+\n");
+	printf("|   ID   |    EMP OU DEV    |       DATA      | ID AFI | ID LIV |\n");
+	printf("+--------+------------------+-----------------+--------+--------+\n");
+    printf("|  %04d  |    %-11s   |   %-11s   |        |        |\n", IdEmprestimoDevolucaoCadastrar, NomeEmprestimoDevolucaoCadastrar, DataEmprestimoDevolucaoCadastrar);
+    printf("+--------+------------------+-----------------+--------+--------+\n");
+    printf("\n");
+    
+    
+	printf("+--------+------------------------------------------------------+\n");
+	printf("|   ID   |                  NOME DO AFILIADO                    |\n");
+	printf("+--------+------------------------------------------------------+\n");    
+	MostrarTodosAfiliados();
+	printf("\n");
+	printf("Digite o Id do Afiliado: ");
+	scanf("%d", &IdEmprestimoDevolucaoAfiliadoCadastrar);
+	system("cls");
+	printf("+--------+------------------+-----------------+--------+--------+\n");
+	printf("|   ID   |    EMP OU DEV    |       DATA      | ID AFI | ID LIV |\n");
+	printf("+--------+------------------+-----------------+--------+--------+\n");
+    printf("|  %04d  |    %-11s   |   %-11s   |  %04d  |        |\n", IdEmprestimoDevolucaoCadastrar, NomeEmprestimoDevolucaoCadastrar, DataEmprestimoDevolucaoCadastrar, IdEmprestimoDevolucaoAfiliadoCadastrar);
+    printf("+--------+------------------+-----------------+--------+--------+\n");
+    printf("\n");
+	
+	printf("+--------+------------------------------------------------------+\n");
+	printf("|   ID   |                   NOME DO LIVRO                      |\n");
+	printf("+--------+------------------------------------------------------+\n");
+    MostrarTodosLivros();
+    printf("\n");
+	printf("Digite o Id do Livro: ");
+    scanf("%d", &IdEmprestimoDevolucaoLivroCadastrar);
+    system("cls");
+	printf("+--------+------------------+-----------------+--------+--------+\n");
+	printf("|   ID   |    EMP OU DEV    |       DATA      | ID AFI | ID LIV |\n");
+	printf("+--------+------------------+-----------------+--------+--------+\n");
+    printf("|  %04d  |    %-11s   |   %-11s   |  %04d  |  %04d  |\n", IdEmprestimoDevolucaoCadastrar, NomeEmprestimoDevolucaoCadastrar, DataEmprestimoDevolucaoCadastrar, IdEmprestimoDevolucaoAfiliadoCadastrar, IdEmprestimoDevolucaoLivroCadastrar);
+    printf("+--------+------------------+-----------------+--------+--------+\n");
+    printf("\n");
 
-    int IdEmprestimoDevolucaoCadastrar = ObterMaiorIdEmprestimoDevolucao() + 1;
-
-    EmprestimoDevolucao VarEmprestimoDevolucao = CriarEmprestimoDevolucao(IdEmprestimoDevolucaoCadastrar, NomeEmprestimoDevolucaoCadastrar);
+    EmprestimoDevolucao VarEmprestimoDevolucao = CriarEmprestimoDevolucao(IdEmprestimoDevolucaoCadastrar, NomeEmprestimoDevolucaoCadastrar, DataEmprestimoDevolucaoCadastrar, IdEmprestimoDevolucaoAfiliadoCadastrar, IdEmprestimoDevolucaoLivroCadastrar);
 
     FILE *fp = fopen("EmprestimoDevolucaos.txt", "a");
     EscreverEmprestimoDevolucao(fp, VarEmprestimoDevolucao);
@@ -858,7 +982,7 @@ void MostrarTodosEmprestimoDevolucaos(){
     }
 
     EmprestimoDevolucao VarEmprestimoDevolucao;
-    while (LerEmprestimoDevolucao(fp, &VarEmprestimoDevolucao) == 2) {
+    while (LerEmprestimoDevolucao(fp, &VarEmprestimoDevolucao) == 5) {
         ImprimirEmprestimoDevolucao(VarEmprestimoDevolucao);
     }
 
@@ -876,12 +1000,26 @@ void EditarCadastroEmprestimoDevolucao(){
     FILE *fpNew = fopen("EmprestimoDevolucaos_tmp.txt", "w");
 
     EmprestimoDevolucao VarEmprestimoDevolucao;
-    while (LerEmprestimoDevolucao(fpOld, &VarEmprestimoDevolucao) == 2) {
+    while (LerEmprestimoDevolucao(fpOld, &VarEmprestimoDevolucao) == 5) {
         if (VarEmprestimoDevolucao.IdEmprestimoDevolucao == IdEmprestimoDevolucaoEditar) {
-            printf("Digite o novo nome do EmprestimoDevolucao: ");
-            fgets(VarEmprestimoDevolucao.NomeEmprestimoDevolucao, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
-            VarEmprestimoDevolucao.NomeEmprestimoDevolucao[strcspn(VarEmprestimoDevolucao.NomeEmprestimoDevolucao, "\n")] = 0; // Remove a nova linha do final
-        }
+        	
+			int temp;
+			printf("Digite '1' para Emprestimo ou '2' para Devolucao: ");
+		    scanf("%1d", &temp);
+		    if(temp == 1){
+		        strcpy(VarEmprestimoDevolucao.NomeEmprestimoDevolucao, "EMPRESTIMO");
+		    } else if(temp == 2){
+		        strcpy(VarEmprestimoDevolucao.NomeEmprestimoDevolucao, "DEVOLUCAO ");
+		    } else {
+		        strcpy(VarEmprestimoDevolucao.NomeEmprestimoDevolucao, "vazio     ");
+		    }
+		    printf("Digite o Data: ");
+		    scanf("%s", VarEmprestimoDevolucao.DataEmprestimoDevolucao);
+		    printf("Digite o Id do Afiliado: ");
+		    scanf("%d", &VarEmprestimoDevolucao.IdEmprestimoDevolucaoAfiliado);
+			printf("Digite o Id do Livro: ");
+		    scanf("%d", &VarEmprestimoDevolucao.IdEmprestimoDevolucaoLivro);
+		}
         EscreverEmprestimoDevolucao(fpNew, VarEmprestimoDevolucao);
     }
 
@@ -897,7 +1035,7 @@ void EditarCadastroEmprestimoDevolucao(){
 // 02.04 - Excluir um cadastro de EmprestimoDevolucao
 void ExcluirCadastroEmprestimoDevolucao(){
 	int IdEmprestimoDevolucaoExcluir;
-    printf("Digite o ID do EmprestimoDevolucao a ser exclu√≠do: ");
+    printf("Digite o ID do EmprestimoDevolucao a ser excluÌdo: ");
     scanf("%d", &IdEmprestimoDevolucaoExcluir);
     getchar(); // Consume o caractere de nova linha
 
@@ -905,7 +1043,7 @@ void ExcluirCadastroEmprestimoDevolucao(){
     FILE *fpNew = fopen("EmprestimoDevolucaos_tmp.txt", "w");
 
     EmprestimoDevolucao VarEmprestimoDevolucao;
-    while (LerEmprestimoDevolucao(fpOld, &VarEmprestimoDevolucao) == 2) {
+    while (LerEmprestimoDevolucao(fpOld, &VarEmprestimoDevolucao) == 5) {
         if (VarEmprestimoDevolucao.IdEmprestimoDevolucao != IdEmprestimoDevolucaoExcluir) {
             EscreverEmprestimoDevolucao(fpNew, VarEmprestimoDevolucao);
         }
@@ -917,19 +1055,23 @@ void ExcluirCadastroEmprestimoDevolucao(){
     remove("EmprestimoDevolucaos.txt");
     rename("EmprestimoDevolucaos_tmp.txt", "EmprestimoDevolucaos.txt");
 
-    printf("Cadastro exclu√≠do com sucesso!\n");
+    printf("Cadastro excluÌdo com sucesso!\n");
 }
 
-// 02 - Fun√ß√£o para chamar Menu Cadastro EmprestimoDevolucao
+// 02 - FunÁ„o para chamar Menu Cadastro EmprestimoDevolucao
 void MenuCadastroEmprestimoDevolucao(){
     int OpMenuCadastroEmprestimoDevolucao;
     do {
-        printf("1. Cadastrar novo EmprestimoDevolucao\n");
-        printf("2. Mostrar todos os EmprestimoDevolucaos\n");
-        printf("3. Editar um cadastro de EmprestimoDevolucao\n");
-        printf("4. Excluir um cadastro de EmprestimoDevolucao\n");
-        printf("5. Sair\n");
-        printf("Escolha uma op√ß√£o: ");
+		printf("+---------------------------------------------------------------+\n");
+    	printf("|             MENU DE CADASTRO DA CATEGORIA DO LIVRO            |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 1-NOVO EMPRESTIMO OU DEVOLUCAO| 2-MOSTRAR TODAS OS MOVIMENTOS |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 3-EDITAR UM MOVIMENTO         | 4-EXCLUIR UM MOVIMENTO        |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("|                  5-VOLTAR PARA MENU PRINCIPAL                 |\n");
+		printf("+-------------------------------+-------------------------------+\n");
+        printf("Escolha uma opÁ„o: ");
         scanf("%d", &OpMenuCadastroEmprestimoDevolucao);
         getchar(); // Consume o caractere de nova linha
         
@@ -943,6 +1085,9 @@ void MenuCadastroEmprestimoDevolucao(){
             }
             case 2: {
             	system("cls");
+            	printf("+--------+------------------+-----------------+--------+--------+\n");
+				printf("|   ID   |    EMP OU DEV    |       DATA      | ID AFI | ID LIV |\n");
+				printf("+--------+------------------+-----------------+--------+--------+\n");
                 MostrarTodosEmprestimoDevolucaos();
                 system("pause");
                 system("cls");
@@ -950,7 +1095,10 @@ void MenuCadastroEmprestimoDevolucao(){
             }
             case 3: {
             	system("cls");
-            	MostrarTodosEmprestimoDevolucaos();
+            	printf("+--------+------------------+-----------------+--------+--------+\n");
+				printf("|   ID   |    EMP OU DEV    |       DATA      | ID AFI | ID LIV |\n");
+				printf("+--------+------------------+-----------------+--------+--------+\n");
+				MostrarTodosEmprestimoDevolucaos();
                 EditarCadastroEmprestimoDevolucao();
                 system("pause");
                 system("cls");
@@ -958,7 +1106,10 @@ void MenuCadastroEmprestimoDevolucao(){
             }
             case 4: {
             	system("cls");
-            	MostrarTodosEmprestimoDevolucaos();
+            	printf("+--------+------------------+-----------------+--------+--------+\n");
+				printf("|   ID   |    EMP OU DEV    |       DATA      | ID AFI | ID LIV |\n");
+				printf("+--------+------------------+-----------------+--------+--------+\n");
+				MostrarTodosEmprestimoDevolucaos();
                 ExcluirCadastroEmprestimoDevolucao();
                 system("pause");
                 system("cls");
@@ -983,7 +1134,7 @@ typedef struct {
     char NomeInventario[50];
 } Inventario;
 
-// 03 - Fun√ß√£o para criar um Inventario
+// 03 - FunÁ„o para criar um Inventario
 Inventario CriarInventario(int IdInventario, char* NomeInventario) {
     Inventario VarInventario;
     VarInventario.IdInventario = IdInventario;
@@ -991,22 +1142,22 @@ Inventario CriarInventario(int IdInventario, char* NomeInventario) {
     return VarInventario;
 }
 
-// 03 - Fun√ß√£o para imprimir um Inventario
+// 03 - FunÁ„o para imprimir um Inventario
 void ImprimirInventario(Inventario VarInventario) {
     printf("%d %s\n", VarInventario.IdInventario, VarInventario.NomeInventario);
 }
 
-// 03 - Fun√ß√£o para escrever um Inventario em um arquivo
+// 03 - FunÁ„o para escrever um Inventario em um arquivo
 void EscreverInventario(FILE* fp, Inventario VarInventario) {
-    fprintf(fp, "%d %s\n", VarInventario.IdInventario, VarInventario.NomeInventario);
+    fprintf(fp, "%d;%s\n", VarInventario.IdInventario, VarInventario.NomeInventario);
 }
 
-// 03 - Fun√ß√£o para ler um Inventario de um arquivo
+// 03 - FunÁ„o para ler um Inventario de um arquivo
 int LerInventario(FILE* fp, Inventario* VarInventario) {
-    return fscanf(fp, "%d %49[^\n]\n", &VarInventario->IdInventario, VarInventario->NomeInventario);
+    return fscanf(fp, "%d;%49[^\n]\n", &VarInventario->IdInventario, VarInventario->NomeInventario);
 }
 
-// 03 - Fun√ß√£o para obter o maior ID de Inventario
+// 03 - FunÁ„o para obter o maior ID de Inventario
 int ObterMaiorIdInventario() {
     FILE *fp = fopen("Inventarios.txt", "r");
     if (fp == NULL) {
@@ -1031,7 +1182,7 @@ int ObterMaiorIdInventario() {
 void CadastrarNovoInventario(){
     char NomeInventarioCadastrar[50];
     printf("Digite o nome do Inventario: ");
-    fgets(NomeInventarioCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
+    fgets(NomeInventarioCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaÁo
     NomeInventarioCadastrar[strcspn(NomeInventarioCadastrar, "\n")] = 0; // Remove a nova linha do final
 
     int IdInventarioCadastrar = ObterMaiorIdInventario() + 1;
@@ -1074,7 +1225,7 @@ void EditarCadastroInventario(){
     while (LerInventario(fpOld, &VarInventario) == 2) {
         if (VarInventario.IdInventario == IdInventarioEditar) {
             printf("Digite o novo nome do Inventario: ");
-            fgets(VarInventario.NomeInventario, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espa√ßo
+            fgets(VarInventario.NomeInventario, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaÁo
             VarInventario.NomeInventario[strcspn(VarInventario.NomeInventario, "\n")] = 0; // Remove a nova linha do final
         }
         EscreverInventario(fpNew, VarInventario);
@@ -1092,7 +1243,7 @@ void EditarCadastroInventario(){
 // 03.04 - Excluir um cadastro de Inventario
 void ExcluirCadastroInventario(){
 	int IdInventarioExcluir;
-    printf("Digite o ID do Inventario a ser exclu√≠do: ");
+    printf("Digite o ID do Inventario a ser excluÌdo: ");
     scanf("%d", &IdInventarioExcluir);
     getchar(); // Consume o caractere de nova linha
 
@@ -1112,19 +1263,23 @@ void ExcluirCadastroInventario(){
     remove("Inventarios.txt");
     rename("Inventarios_tmp.txt", "Inventarios.txt");
 
-    printf("Cadastro exclu√≠do com sucesso!\n");
+    printf("Cadastro excluÌdo com sucesso!\n");
 }
 
-// 03 - Fun√ß√£o para chamar Menu Cadastro Inventario
+// 03 - FunÁ„o para chamar Menu Cadastro Inventario
 void MenuCadastroInventario(){
     int OpMenuCadastroInventario;
     do {
-        printf("1. Cadastrar novo Inventario\n");
-        printf("2. Mostrar todos os Inventarios\n");
-        printf("3. Editar um cadastro de Inventario\n");
-        printf("4. Excluir um cadastro de Inventario\n");
-        printf("5. Sair\n");
-        printf("Escolha uma op√ß√£o: ");
+    	printf("+---------------------------------------------------------------+\n");
+    	printf("|                       MENU DO INVENTARIO                      |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 1-CADASTRAR NOVO INVENTARIO   | 2-MOSTRAR TODOS OS INVENTARIOS|\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 3-EDITAR UM INVENTARIO        | 4-EXCLUIR UM INVENTARIO       |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("|                  5-VOLTAR PARA MENU PRINCIPAL                 |\n");
+		printf("+-------------------------------+-------------------------------+\n");
+        printf("Escolha uma opÁ„o: ");
         scanf("%d", &OpMenuCadastroInventario);
         getchar(); // Consume o caractere de nova linha
         
@@ -1174,16 +1329,20 @@ void MenuCadastroInventario(){
 
 
 
-// 00 - Fun√ß√£o para chamar Menu Cadastro
+// 00 - FunÁ„o para chamar Menu Cadastro
 void MenuCadastro(){system("cls");
     int OpMenuCadastro;
     do {
-        printf("1. Afiliado\n");
-        printf("2. Livro\n");
-        printf("3. Status Livro\n");
-        printf("4. Categooria Livro\n");
-        printf("5. Sair\n");
-        printf("Escolha uma op√ß√£o: ");
+    	printf("+---------------------------------------------------------------+\n");
+    	printf("|                       MENU DE CADASTRO                        |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 1-AFILIADO                    | 2-LIVRO                       |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 3-STATUS LIVRO                | 4-CATEGORIA LIVRO             |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("|                  5-VOLTAR PARA MENU PRINCIPAL                 |\n");
+		printf("+-------------------------------+-------------------------------+\n");
+        printf("Escolha uma opÁ„o: ");
         scanf("%d", &OpMenuCadastro);
         getchar(); // Consume o caractere de nova linha
         
@@ -1228,12 +1387,16 @@ int main() {
 	system("cls");
 	int OpMenu;
     do {
-        printf("1. Cadastro\n");
-        printf("2. Emprestimos e Devolu√ß√£o\n");
-        printf("3. Inventario\n");
-        printf("4. Impress√£o\n");
-        printf("5. Sair\n");
-        printf("Escolha uma op√ß√£o: ");
+    	printf("+---------------------------------------------------------------+\n");
+    	printf("|                         MENU PRINCIPAL                        |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 1-CADASTRO                    | 2-EMPRESTIMOS E DEVOLUCOES    |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("| 3-INVENTARIO                  | 4-IMPRESSAO                   |\n");
+    	printf("+-------------------------------+-------------------------------+\n");
+    	printf("|                            5-SAIR                             |\n");
+		printf("+-------------------------------+-------------------------------+\n");
+        printf("Escolha uma opÁ„o: ");
         scanf("%d", &OpMenu);
         getchar(); // Consume o caractere de nova linha
         
