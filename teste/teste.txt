@@ -1128,36 +1128,44 @@ void MenuCadastroEmprestimoDevolucao(){
 
 
 
-// 03 - Estrutura para representar um Inventario
+// 02 - Estrutura para representar um Inventario
 typedef struct {
     int IdInventario;
-    char NomeInventario[50];
+    int IdInventarioLivro;
+    char NomeLivroInventario[50];
+    int IdInventarioCategoria;
+    int IdInventarioStatus;
+    
 } Inventario;
 
-// 03 - Função para criar um Inventario
-Inventario CriarInventario(int IdInventario, char* NomeInventario) {
+// 02 - Função para criar um Inventario
+Inventario CriarInventario(int IdInventario, int IdInventarioLivro, char* NomeLivroInventario, int IdInventarioCategoria, int IdInventarioStatus) {
     Inventario VarInventario;
     VarInventario.IdInventario = IdInventario;
-    strcpy(VarInventario.NomeInventario, NomeInventario);
+    VarInventario.IdInventarioLivro = IdInventarioLivro;
+    strcpy(VarInventario.NomeLivroInventario, NomeLivroInventario);
+    VarInventario.IdInventarioCategoria = IdInventarioCategoria;
+    VarInventario.IdInventarioStatus = IdInventarioStatus;
     return VarInventario;
 }
 
-// 03 - Função para imprimir um Inventario
+// 02 - Função para imprimir um Inventario
 void ImprimirInventario(Inventario VarInventario) {
-    printf("%d %s\n", VarInventario.IdInventario, VarInventario.NomeInventario);
+    printf("|  %04d  |  %04d  |  %-50s  |  %04d  |  %04d  |\n", VarInventario.IdInventario, VarInventario.IdInventarioLivro, VarInventario.NomeLivroInventario, VarInventario.IdInventarioCategoria, VarInventario.IdInventarioStatus);
+    printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
 }
 
-// 03 - Função para escrever um Inventario em um arquivo
+// 02 - Função para escrever um Inventario em um arquivo
 void EscreverInventario(FILE* fp, Inventario VarInventario) {
-    fprintf(fp, "%d;%s\n", VarInventario.IdInventario, VarInventario.NomeInventario);
+    fprintf(fp, "%d;%d;%s;%d;%d\n", VarInventario.IdInventario, VarInventario.IdInventarioLivro, VarInventario.NomeLivroInventario, VarInventario.IdInventarioCategoria, VarInventario.IdInventarioStatus);
 }
 
-// 03 - Função para ler um Inventario de um arquivo
+// 02 - Função para ler um Inventario de um arquivo
 int LerInventario(FILE* fp, Inventario* VarInventario) {
-    return fscanf(fp, "%d;%49[^\n]\n", &VarInventario->IdInventario, VarInventario->NomeInventario);
+    return fscanf(fp, "%d;%d;%49[^;];%d;%d\n", &VarInventario->IdInventario, &VarInventario->IdInventarioLivro, VarInventario->NomeLivroInventario, &VarInventario->IdInventarioCategoria, &VarInventario->IdInventarioStatus);
 }
 
-// 03 - Função para obter o maior ID de Inventario
+// 02 - Função para obter o maior ID de Inventario
 int ObterMaiorIdInventario() {
     FILE *fp = fopen("Inventarios.txt", "r");
     if (fp == NULL) {
@@ -1166,7 +1174,7 @@ int ObterMaiorIdInventario() {
 
     int MaiorIdInventario = 0;
     Inventario VarInventario;
-    while (LerInventario(fp, &VarInventario) == 2) {
+    while (LerInventario(fp, &VarInventario) == 5) {
         if (VarInventario.IdInventario > MaiorIdInventario) {
             MaiorIdInventario = VarInventario.IdInventario;
         }
@@ -1178,25 +1186,77 @@ int ObterMaiorIdInventario() {
 }
 
 
-// 03.01 - Cadastrar novo Inventario
+// 02.01 - Cadastrar novo Inventario
 void CadastrarNovoInventario(){
-    char NomeInventarioCadastrar[50];
-    printf("Digite o nome do Inventario: ");
-    fgets(NomeInventarioCadastrar, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaço
-    NomeInventarioCadastrar[strcspn(NomeInventarioCadastrar, "\n")] = 0; // Remove a nova linha do final
+    char NomeLivroInventarioCadastrar[50];
+    int IdInventarioLivroCadastrar, IdInventarioCategoriaCadastrar, IdInventarioStatusCadastrar;
+	
+	int IdInventarioCadastrar = ObterMaiorIdInventario() + 1;
+	
 
-    int IdInventarioCadastrar = ObterMaiorIdInventario() + 1;
-
-    Inventario VarInventario = CriarInventario(IdInventarioCadastrar, NomeInventarioCadastrar);
-
-    FILE *fp = fopen("Inventarios.txt", "a");
-    EscreverInventario(fp, VarInventario);
+	printf("+--------+------------------------------------------------------+\n");
+	printf("|   ID   |                   NOME DO LIVRO                      |\n");
+	printf("+--------+------------------------------------------------------+\n");
+	MostrarTodosLivros();
+	printf("Digite o Id do Livro: ");
+	scanf("%d", &IdInventarioLivroCadastrar);
+	system("cls");
+	
+	FILE *fp = fopen("Livros.txt", "r");
+    Livro VarLivro;
+    while (LerLivro(fp, &VarLivro) == 2) {
+        if (VarLivro.IdLivro == IdInventarioLivroCadastrar) {
+            strcpy(NomeLivroInventarioCadastrar, VarLivro.NomeLivro);
+        }
+    }
     fclose(fp);
+    
+	printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+	printf("|   ID   | ID LIV |                        LIVRO                         | ID CAT | ID STS |\n");
+	printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+    printf("|  %04d  |  %04d  |  %-50s  |        |        |\n", IdInventarioCadastrar, IdInventarioLivroCadastrar, NomeLivroInventarioCadastrar);
+    printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+    printf("\n");
+
+	printf("+--------+------------------------------------------------------+\n");
+	printf("|   ID   |             NOME DA CATEGORIA DO LIVRO               |\n");
+	printf("+--------+------------------------------------------------------+\n");
+    MostrarTodosCategoriaLivros();
+	printf("Digite o Id da categoria: ");
+	scanf("%d", &IdInventarioCategoriaCadastrar);
+	system("cls");
+	printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+	printf("|   ID   | ID LIV |                        LIVRO                         | ID CAT | ID STS |\n");
+	printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+    printf("|  %04d  |  %04d  |  %-50s  |  %04d  |        |\n", IdInventarioCadastrar, IdInventarioLivroCadastrar, NomeLivroInventarioCadastrar, IdInventarioCategoriaCadastrar);
+    printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+    printf("\n");
+    
+    printf("+--------+------------------------------------------------------+\n");
+	printf("|   ID   |              NOME DO STATUS DO LIVRO                 |\n");
+	printf("+--------+------------------------------------------------------+\n");
+	MostrarTodosStatusLivros();
+	printf("Digite o Id do Status: ");
+	scanf("%d", &IdInventarioStatusCadastrar);
+	system("cls");
+	printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+	printf("|   ID   | ID LIV |                        LIVRO                         | ID CAT | ID STS |\n");
+	printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+    printf("|  %04d  |  %04d  |  %-50s  |  %04d  |  %04d  |\n", IdInventarioCadastrar, IdInventarioLivroCadastrar, NomeLivroInventarioCadastrar, IdInventarioCategoriaCadastrar, IdInventarioStatusCadastrar);
+    printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+    printf("\n");
+	
+	
+    Inventario VarInventario = CriarInventario(IdInventarioCadastrar, IdInventarioLivroCadastrar, NomeLivroInventarioCadastrar, IdInventarioCategoriaCadastrar, IdInventarioStatusCadastrar);
+
+    FILE *fp2 = fopen("Inventarios.txt", "a");
+    EscreverInventario(fp2, VarInventario);
+    fclose(fp2);
 
     printf("Inventario cadastrado com sucesso!\n");
 }
 
-// 03.02 - Mostrar todos os Inventarios
+// 02.02 - Mostrar todos os Inventarios
 void MostrarTodosInventarios(){
 	FILE *fp = fopen("Inventarios.txt", "r");
     if (fp == NULL) {
@@ -1204,16 +1264,16 @@ void MostrarTodosInventarios(){
     }
 
     Inventario VarInventario;
-    while (LerInventario(fp, &VarInventario) == 2) {
+    while (LerInventario(fp, &VarInventario) == 5) {
         ImprimirInventario(VarInventario);
     }
 
     fclose(fp);
 }
 
-// 03.03 - Editar um cadastro de Inventario
+// 02.03 - Editar um cadastro de Inventario
 void EditarCadastroInventario(){
-	int IdInventarioEditar;
+/*	int IdInventarioEditar;
     printf("Digite o ID do Inventario a ser editado: ");
     scanf("%d", &IdInventarioEditar);
     getchar(); // Consume o caractere de nova linha
@@ -1222,12 +1282,26 @@ void EditarCadastroInventario(){
     FILE *fpNew = fopen("Inventarios_tmp.txt", "w");
 
     Inventario VarInventario;
-    while (LerInventario(fpOld, &VarInventario) == 2) {
+    while (LerInventario(fpOld, &VarInventario) == 5) {
         if (VarInventario.IdInventario == IdInventarioEditar) {
-            printf("Digite o novo nome do Inventario: ");
-            fgets(VarInventario.NomeInventario, 50, stdin); // Diferente do scanf, o fgets armazena permitindo o espaço
-            VarInventario.NomeInventario[strcspn(VarInventario.NomeInventario, "\n")] = 0; // Remove a nova linha do final
-        }
+        	
+			int temp;
+			printf("Digite '1' para Emprestimo ou '2' para Devolucao: ");
+		    scanf("%1d", &temp);
+		    if(temp == 1){
+		        strcpy(VarInventario.NomeInventario, "EMPRESTIMO");
+		    } else if(temp == 2){
+		        strcpy(VarInventario.NomeInventario, "DEVOLUCAO ");
+		    } else {
+		        strcpy(VarInventario.NomeInventario, "vazio     ");
+		    }
+		    printf("Digite o Data: ");
+		    scanf("%s", VarInventario.DataInventario);
+		    printf("Digite o Id do Afiliado: ");
+		    scanf("%d", &VarInventario.IdInventarioAfiliado);
+			printf("Digite o Id do Livro: ");
+		    scanf("%d", &VarInventario.IdInventarioLivro);
+		}
         EscreverInventario(fpNew, VarInventario);
     }
 
@@ -1238,9 +1312,9 @@ void EditarCadastroInventario(){
     rename("Inventarios_tmp.txt", "Inventarios.txt");
 
     printf("Cadastro editado com sucesso!\n");
-}
+*/}
 
-// 03.04 - Excluir um cadastro de Inventario
+// 02.04 - Excluir um cadastro de Inventario
 void ExcluirCadastroInventario(){
 	int IdInventarioExcluir;
     printf("Digite o ID do Inventario a ser excluído: ");
@@ -1251,7 +1325,7 @@ void ExcluirCadastroInventario(){
     FILE *fpNew = fopen("Inventarios_tmp.txt", "w");
 
     Inventario VarInventario;
-    while (LerInventario(fpOld, &VarInventario) == 2) {
+    while (LerInventario(fpOld, &VarInventario) == 5) {
         if (VarInventario.IdInventario != IdInventarioExcluir) {
             EscreverInventario(fpNew, VarInventario);
         }
@@ -1266,14 +1340,14 @@ void ExcluirCadastroInventario(){
     printf("Cadastro excluído com sucesso!\n");
 }
 
-// 03 - Função para chamar Menu Cadastro Inventario
+// 02 - Função para chamar Menu Cadastro Inventario
 void MenuCadastroInventario(){
     int OpMenuCadastroInventario;
     do {
-    	printf("+---------------------------------------------------------------+\n");
-    	printf("|                       MENU DO INVENTARIO                      |\n");
+		printf("+---------------------------------------------------------------+\n");
+    	printf("|                      MENU DE INVENTARIO                       |\n");
     	printf("+-------------------------------+-------------------------------+\n");
-    	printf("| 1-CADASTRAR NOVO INVENTARIO   | 2-MOSTRAR TODOS OS INVENTARIOS|\n");
+    	printf("| 1-NOVO INVENTARIO             | 2-MOSTRAR TODAS OS INVENTARIOS|\n");
     	printf("+-------------------------------+-------------------------------+\n");
     	printf("| 3-EDITAR UM INVENTARIO        | 4-EXCLUIR UM INVENTARIO       |\n");
     	printf("+-------------------------------+-------------------------------+\n");
@@ -1292,7 +1366,10 @@ void MenuCadastroInventario(){
                 break;
             }
             case 2: {
-				system("cls");
+            	system("cls");
+            	printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+				printf("|   ID   | ID LIV |                        LIVRO                         | ID CAT | ID STS |\n");
+				printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
                 MostrarTodosInventarios();
                 system("pause");
                 system("cls");
@@ -1300,7 +1377,10 @@ void MenuCadastroInventario(){
             }
             case 3: {
             	system("cls");
-            	MostrarTodosInventarios();
+            	printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+				printf("|   ID   | ID LIV |                        LIVRO                         | ID CAT | ID STS |\n");
+				printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+				MostrarTodosInventarios();
                 EditarCadastroInventario();
                 system("pause");
                 system("cls");
@@ -1308,7 +1388,10 @@ void MenuCadastroInventario(){
             }
             case 4: {
             	system("cls");
-            	MostrarTodosInventarios();
+            	printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+				printf("|   ID   | ID LIV |                        LIVRO                         | ID CAT | ID STS |\n");
+				printf("+--------+--------+------------------------------------------------------+--------+--------+\n");
+				MostrarTodosInventarios();
                 ExcluirCadastroInventario();
                 system("pause");
                 system("cls");
@@ -1374,7 +1457,6 @@ void MenuCadastro(){system("cls");
         }
     } while (OpMenuCadastro != 5);
 }
-
 
 
 
