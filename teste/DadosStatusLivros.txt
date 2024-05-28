@@ -1,3 +1,1 @@
-1;Disponivel
-2;Indisponivel
-3;Sem Estoque
+1;Locado
