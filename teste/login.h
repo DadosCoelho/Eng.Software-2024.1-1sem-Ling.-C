@@ -433,7 +433,7 @@ void Abertura()
 		printf("%c", 219);
 		Sleep(20);
 	}
-
+	Sleep(1000);
 }
 
 
@@ -491,8 +491,8 @@ void Login(Acesso VarAcesso[])
 		printf("\n");
 		printf("\n");
 		printf("\n");
-		printf("%*sDigite seu Usuario:\n\n", 50, "");
-		printf(" %*s ", 50, "");
+		printf("%*sDigite seu Usuario:\n\n", (120-19)/2, "");
+		printf(" %*s ", 55, "");
 		scanf("%s", UsuarioDigitado);
 
 		for (i = 0; i < numUsuarios; ++i)
@@ -512,10 +512,20 @@ void Login(Acesso VarAcesso[])
 					printf("\n");
 					printf("\n");
 					printf("\n");
-					printf("\n");
-					printf("%*s   Ol\xA0 %s!\n", 50, "", UsuarioDigitado);
+					printf("%*sOl\xA0 %s!\n", (120-(strlen(VarAcesso[i].NomeAcesso)+4))/2, "", VarAcesso[i].NomeAcesso);
 					Sleep(1500);
-					printf("\n%*sDigite sua Senha:\n\n", 50, "");
+					system("cls");
+					printf("\n");
+					printf("\n");
+					printf("\n");
+					printf("\n");
+					printf("\n");
+					printf("\n");
+					printf("\n");
+					printf("\n");
+					printf("\n");
+					printf("\n");
+					printf("\n%*sDigite sua Senha:\n\n", (120-17)/2, "");
 					printf(" %*s ", 55, "");
 					
 					// Oculta a senha digitada
@@ -576,10 +586,10 @@ void Login(Acesso VarAcesso[])
 						printf("\n");
 						printf("\n");
 						printf("\n");
-						printf(" %*s \n", 118, "");
-						printf(" %*sSenha incorreta.\n", 50, "");
-						printf(" %*s Pressione '1' para tentar novamente ou '2' para sair: \n", 30, "");
-						printf(" %*s ", 55, "");
+						printf("\n");
+						printf("%*sSenha incorreta.\n", (120-16)/2, "");
+						printf("%*sDigite '1' para tentar novamente ou '2' para outras op%c%ces:\n", (120-59)/2, "", 135, 198);
+						printf("%*s", 55, "");
 
 						VerificaUsuario = 1;
 						int opcao;
@@ -612,8 +622,8 @@ void Login(Acesso VarAcesso[])
 			printf("\n");
 			printf("\n");
 			printf("\n");
-			printf(" %*s     Usuario n%co encontrado.    %*s \n", 38, "", 198, 43, "");
-			printf(" %*s Escolha uma op%c%co: '1' para tentar novamente, '2' para sair: \n", 25, "", 135, 198);
+			printf("%*sUsuario n%co encontrado.\n", (120-23)/2, "", 198);
+			printf("%*sDigite '1' para tentar novamente ou '2' para sair:\n", (120-50)/2, "");
 			printf(" %*s ", 55, "");
 						
 			int opcaoUsuario;
@@ -632,7 +642,19 @@ void Login(Acesso VarAcesso[])
 		}
 		else if (VerificaUsuario == 1)
 		{
-			printf(" %*s Escolha uma op%c%co: '1' para digitar o usuario, '2' para sair: \n", 25, "", 135, 198);
+			system("cls");
+			printf("\n");
+			printf("\n");
+			printf("\n");
+			printf("\n");
+			printf("\n");
+			printf("\n");
+			printf("\n");
+			printf("\n");
+			printf("\n");
+			printf("\n");
+			printf("\n");
+			printf("%*sDigite '1' para digitar o usuario ou '2' para sair:\n", (120-51)/2, "");
 			printf(" %*s ", 55, "");
 			int opcaoUsuario;
 			scanf("%d", &opcaoUsuario);

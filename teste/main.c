@@ -249,7 +249,7 @@ void MenuCadastroAfiliado()
 		printf("Escolha uma op%c%co: ", 135, 198);
 		scanf("%d", &OpMenuCadastroAfiliado);
 		getchar();
-
+		
 		switch (OpMenuCadastroAfiliado)
 		{
 		case 1:
